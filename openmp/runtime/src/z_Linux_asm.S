@@ -2427,12 +2427,12 @@ __kmp_unnamed_critical_addr:
     .data
     COMMON .gomp_critical_user_, 32, 3
     .data
-    .align 8
+    .align 4
     .global KMP_PREFIX_UNDERSCORE(__kmp_unnamed_critical_addr)
 KMP_PREFIX_UNDERSCORE(__kmp_unnamed_critical_addr):
-    .8byte .gomp_critical_user_
+    .4byte .gomp_critical_user_
 #ifdef __ELF__
-    .size KMP_PREFIX_UNDERSCORE(__kmp_unnamed_critical_addr),8
+    .size KMP_PREFIX_UNDERSCORE(__kmp_unnamed_critical_addr),4
 #endif
 #endif /* KMP_ARCH_PPC64 || KMP_ARCH_AARCH64 || KMP_ARCH_MIPS64 ||
           KMP_ARCH_RISCV64 || KMP_ARCH_LOONGARCH64 || KMP_ARCH_VE || 
