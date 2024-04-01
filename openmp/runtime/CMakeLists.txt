@@ -55,6 +55,8 @@ else() # Part of LLVM build
     set(LIBOMP_ARCH ppc64)
   elseif(LIBOMP_NATIVE_ARCH MATCHES "powerpc")
     set(LIBOMP_ARCH ppc)
+  elseif(LIBOMP_NATIVE_ARCH MATCHES "aarch64_32")
+    set(LIBOMP_ARCH aarch64_32)
   elseif(LIBOMP_NATIVE_ARCH MATCHES "aarch64")
     set(LIBOMP_ARCH aarch64)
   elseif(LIBOMP_NATIVE_ARCH MATCHES "arm64")
@@ -167,6 +169,7 @@ set(IA32 FALSE)
 set(INTEL64 FALSE)
 set(ARM FALSE)
 set(AARCH64 FALSE)
+set(AARCH64_32 FALSE)
 set(AARCH64_A64FX FALSE)
 set(PPC64BE FALSE)
 set(PPC64LE FALSE)
@@ -196,6 +199,8 @@ elseif("${LIBOMP_ARCH}" STREQUAL "ppc64le") # PPC64LE architecture
   set(PPC64 TRUE)
 elseif("${LIBOMP_ARCH}" STREQUAL "aarch64") # AARCH64 architecture
   set(AARCH64 TRUE)
+elseif("${LIBOMP_ARCH}" STREQUAL "aarch64_32") # AARCH64_32 architecture
+  set(AARCH64_32 TRUE)
 elseif("${LIBOMP_ARCH}" STREQUAL "aarch64_a64fx") # AARCH64_A64FX architecture
   set(AARCH64_A64FX TRUE)
 elseif("${LIBOMP_ARCH}" STREQUAL "mic") # Intel(R) Many Integrated Core Architecture
