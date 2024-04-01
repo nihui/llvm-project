@@ -1236,7 +1236,7 @@ KMP_LABEL(kmp_1_exit):
 #endif /* KMP_ARCH_X86_64 */
 
 // '
-#if (KMP_OS_LINUX || KMP_OS_DARWIN || KMP_OS_WINDOWS) && KMP_ARCH_AARCH64
+#if (KMP_OS_LINUX || KMP_OS_DARWIN || KMP_OS_WINDOWS) && (KMP_ARCH_AARCH64 || KMP_ARCH_AARCH64_32)
 
 //------------------------------------------------------------------------
 // int
@@ -1360,7 +1360,7 @@ KMP_LABEL(kmp_1):
 	DEBUG_INFO __kmp_invoke_microtask
 // -- End  __kmp_invoke_microtask
 
-#endif /* (KMP_OS_LINUX || KMP_OS_DARWIN || KMP_OS_WINDOWS) && KMP_ARCH_AARCH64 */
+#endif /* (KMP_OS_LINUX || KMP_OS_DARWIN || KMP_OS_WINDOWS) && (KMP_ARCH_AARCH64 || KMP_ARCH_AARCH64_32) */
 
 #if (KMP_OS_LINUX || KMP_OS_DARWIN || KMP_OS_WINDOWS) && KMP_ARCH_ARM
 
@@ -1505,7 +1505,7 @@ KMP_LABEL(kmp_1):
 	DEBUG_INFO __kmp_invoke_microtask
 // -- End  __kmp_invoke_microtask
 
-#endif /* (KMP_OS_LINUX || KMP_OS_DARWIN || KMP_OS_WINDOWS) && KMP_ARCH_AARCH64 */
+#endif /* (KMP_OS_LINUX || KMP_OS_DARWIN || KMP_OS_WINDOWS) && KMP_ARCH_ARM */
 
 #if KMP_ARCH_PPC64
 
@@ -2405,22 +2405,7 @@ __kmp_invoke_microtask:
 
 #endif /* KMP_ARCH_S390X */
 
-#if KMP_ARCH_ARM || KMP_ARCH_MIPS
-    .data
-    COMMON .gomp_critical_user_, 32, 3
-    .data
-    .align 4
-    .global __kmp_unnamed_critical_addr
-__kmp_unnamed_critical_addr:
-    .4byte .gomp_critical_user_
-#ifdef __ELF__
-    .size __kmp_unnamed_critical_addr,4
-#endif
-#endif /* KMP_ARCH_ARM */
-
-#if KMP_ARCH_PPC64 || KMP_ARCH_AARCH64 || KMP_ARCH_MIPS64 ||                   \
-    KMP_ARCH_RISCV64 || KMP_ARCH_LOONGARCH64 || KMP_ARCH_VE ||                 \
-    KMP_ARCH_S390X
+#if KMP_ARCH_ARM || KMP_ARCH_MIPS || KMP_ARCH_AARCH64_32
 #ifndef KMP_PREFIX_UNDERSCORE
 # define KMP_PREFIX_UNDERSCORE(x) x
 #endif
@@ -2433,6 +2418,24 @@ KMP_PREFIX_UNDERSCORE(__kmp_unnamed_critical_addr):
     .4byte .gomp_critical_user_
 #ifdef __ELF__
     .size KMP_PREFIX_UNDERSCORE(__kmp_unnamed_critical_addr),4
+#endif
+#endif /* KMP_ARCH_ARM || KMP_ARCH_MIPS || KMP_ARCH_AARCH64_32 */
+
+#if KMP_ARCH_PPC64 || KMP_ARCH_AARCH64 || KMP_ARCH_MIPS64 ||                   \
+    KMP_ARCH_RISCV64 || KMP_ARCH_LOONGARCH64 || KMP_ARCH_VE ||                 \
+    KMP_ARCH_S390X
+#ifndef KMP_PREFIX_UNDERSCORE
+# define KMP_PREFIX_UNDERSCORE(x) x
+#endif
+    .data
+    COMMON .gomp_critical_user_, 32, 3
+    .data
+    .align 8
+    .global KMP_PREFIX_UNDERSCORE(__kmp_unnamed_critical_addr)
+KMP_PREFIX_UNDERSCORE(__kmp_unnamed_critical_addr):
+    .8byte .gomp_critical_user_
+#ifdef __ELF__
+    .size KMP_PREFIX_UNDERSCORE(__kmp_unnamed_critical_addr),8
 #endif
 #endif /* KMP_ARCH_PPC64 || KMP_ARCH_AARCH64 || KMP_ARCH_MIPS64 ||
           KMP_ARCH_RISCV64 || KMP_ARCH_LOONGARCH64 || KMP_ARCH_VE || 
